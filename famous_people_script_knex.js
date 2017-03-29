@@ -1,23 +1,24 @@
 const settings = require("./settings"); // settings.json
-const knex = require('knex')({
-  client:'pg',
-  connection: {
-    user: settings.user,
-    password: settings.password,
-    database: settings.database,
-    host: settings.hostname,
-    port: settings.port,
-    ssl: settings.ssl
-  }
-});
-
+// const knex = require('knex')({
+//   client:'pg',
+//   connection: {
+//     user: settings.user,
+//     password: settings.password,
+//     database: settings.database,
+//     host: settings.hostname,
+//     port: settings.port,
+//     ssl: settings.ssl
+//   }
+// });
+const knexConfig = require('./knexfile')
+const knex = require('knex')(knexConfig.development)
 
 const famous_people = (callback) => {
 
-knex.select().from('famous_people').where('first_name', process.argv[2]).then(function(result) {
-  callback(result);
-  knex.destroy();
-});
+  knex.select().from('famous_people').where('first_name', process.argv[2]).then(function(result) {
+    callback(result);
+    knex.destroy();
+  });
 
 };
 
